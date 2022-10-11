@@ -4,5 +4,5 @@ The goal of the project is to create a dapp interacting with blockchain using : 
 
 ## Installation
 * folder client
- * `npm init vite@latest`
+  * `npm init vite@latest`
 * folder back
