@@ -4,7 +4,9 @@ The goal of the project is to create a dapp interacting with blockchain using : 
 
 ## Installation
 * folder client
-  * `npm init vite@latest`
-  * `Project Name : ./`
-  * Follow instruction here for installing tailwindcss : https://tailwindcss.com/docs/guides/vite
+  * Installation and config of Vite :
+    * `npm init vite@latest`
+    * `Project Name : ./`
+  * Installation of tailwindcss, follow : https://tailwindcss.com/docs/guides/vite
+  * Installation of react-icons : `npm install react-icons --save`
 * folder back
