@@ -10,3 +10,6 @@ The goal of the project is to create a dapp interacting with blockchain using : 
   * Installation of tailwindcss, follow : https://tailwindcss.com/docs/guides/vite
   * Installation of react-icons : `npm install react-icons --save`
 * folder back
+
+## Tools
+* Insane gradients tools : https://csshero.org/mesher/
