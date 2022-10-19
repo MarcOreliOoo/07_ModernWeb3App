@@ -11,7 +11,7 @@ import "@nomicfoundation/hardhat-toolbox";
 import { Wallet } from 'ethers';
 import fg from 'fast-glob';
 
-dotenv.config();
+dotenv.config({path:"../.env"});
 
 // Load all tasks files
 if (process.env.SKIP_LOAD !== 'true') {
@@ -49,27 +49,36 @@ const mainnetFork =
 	//True is using yourself account - do not commit your .env file
 	//False is using the sismo mnemonic and creation of accounts
 const getOneSpeAccountOrAccountsFromMnemonic = true;
-
-const getCommonNetworkConfig = (networkName: Network, networkId: number) => ({
-  url: NETWORKS_RPC_URL[networkName] ?? '',
-  hardfork: HARDFORK,
-  chainId: networkId,
-  accounts: getOneSpeAccountOrAccountsFromMnemonic ? process.env.PRIVATE_KEY : {
-    mnemonic: MNEMONIC,
-    path: MNEMONIC_PATH,
-    initialIndex: 0,
-    count: 20,
-  },
-});
+const getCommonNetworkConfig = (networkName: Network, networkId: number) => {
+	console.log({
+		url: NETWORKS_RPC_URL[networkName] ?? '',
+		hardfork: HARDFORK,
+		chainId: networkId,
+		accounts: getOneSpeAccountOrAccountsFromMnemonic ? [process.env.PRIVATE_KEY] : {
+		  mnemonic: MNEMONIC,
+		  path: MNEMONIC_PATH,
+		  initialIndex: 0,
+		  count: 20,
+		},
+  })
+	return({
+  	url: NETWORKS_RPC_URL[networkName] ?? '',
+  	hardfork: HARDFORK,
+  	chainId: networkId,
+  	accounts: getOneSpeAccountOrAccountsFromMnemonic ? [process.env.PRIVATE_KEY] : {
+		mnemonic: MNEMONIC,
+		path: MNEMONIC_PATH,
+		initialIndex: 0,
+		count: 20,
+  	},
+})};
 
 const accounts = Array.from(Array(20), (_, index) => {
-  const wallet = Wallet.fromMnemonic(SISMO_SHARED_MNEMONIC, `m/44'/60'/0'/0/${index}`);
-  //console.log(`-- Account #${index}: ${wallet.publicKey} - ${wallet.privateKey} \n`);
-
-  return {
-    privateKey: wallet.privateKey,
-    balance: '1000000000000000000000000',
-  };
+	const wallet = Wallet.fromMnemonic(SISMO_SHARED_MNEMONIC, `m/44'/60'/0'/0/${index}`);
+  	return {
+    	privateKey: wallet.privateKey,
+    	balance: '1000000000000000000000000',
+  	};
 });
 
 const LOCAL_CHAIN_ID = process.env.LOCAL_CHAIN_ID ? parseInt(process.env.LOCAL_CHAIN_ID) : 31337;
@@ -95,14 +104,14 @@ const config: HardhatUserConfig = {
   },
   defaultNetwork: 'hardhat',
   networks: {
-    kovan: getCommonNetworkConfig(EthereumNetwork.kovan, 42),
+    //kovan: getCommonNetworkConfig(EthereumNetwork.kovan, 42),
     goerli: getCommonNetworkConfig(EthereumNetwork.goerli, 5),
-    main: getCommonNetworkConfig(EthereumNetwork.main, 1),
+    /*main: getCommonNetworkConfig(EthereumNetwork.main, 1),
     polygon: getCommonNetworkConfig(PolygonNetwork.main, 137),
     sandboxPolygon: getCommonNetworkConfig(PolygonNetwork.main, 137),
     rinkeby: getCommonNetworkConfig(EthereumNetwork.rinkeby, 4),
     mumbai: getCommonNetworkConfig(PolygonNetwork.mumbai, 80001),
-    xdai: getCommonNetworkConfig(XDaiNetwork.xdai, 100),
+    xdai: getCommonNetworkConfig(XDaiNetwork.xdai, 100),*/
     local: {
       url: `http://${LOCAL_HOSTNAME}:${LOCAL_PORT}`,
       //accounts: accounts.map((account) => account.privateKey),
