@@ -46,11 +46,15 @@ const mainnetFork =
       }
     : undefined;
 
+	//True is using yourself account - do not commit your .env file
+	//False is using the sismo mnemonic and creation of accounts
+const getOneSpeAccountOrAccountsFromMnemonic = true;
+
 const getCommonNetworkConfig = (networkName: Network, networkId: number) => ({
   url: NETWORKS_RPC_URL[networkName] ?? '',
   hardfork: HARDFORK,
   chainId: networkId,
-  accounts: {
+  accounts: getOneSpeAccountOrAccountsFromMnemonic ? process.env.PRIVATE_KEY : {
     mnemonic: MNEMONIC,
     path: MNEMONIC_PATH,
     initialIndex: 0,
