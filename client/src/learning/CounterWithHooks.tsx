@@ -1,7 +1,7 @@
 import { Dispatch, FunctionComponent, MouseEvent, PropsWithChildren, RefObject, useRef, useState } from "react"
 
 /*
-	Creation of a simple component with props and children
+	Creation of a simple counter with props and children and hooks state and ref
 */
 
 type Props = PropsWithChildren<{
