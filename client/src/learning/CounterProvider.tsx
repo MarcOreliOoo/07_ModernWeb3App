@@ -11,7 +11,7 @@ type Props = PropsWithChildren<{
 	start?:number
 }>;
 
-export const CounterProvider: FunctionComponent = ({start = 0, children}: Props) => {
+export const CounterProvider = ({start = 0, children}: Props) => {
 	const [n, setN] = useState(start);
 	const incr = useCallback(() => setN(n => n+1),[]);
 
