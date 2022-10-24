@@ -16,3 +16,6 @@ The goal of the project is to create a dapp interacting with blockchain using : 
 
 ## Tools
 * Insane gradients tools : https://csshero.org/mesher/
+
+## Goerli
+* Deployed bidon contract at : 0x735f04E6BBe66f5Cdd4D40A2a3537E3D82a38291
