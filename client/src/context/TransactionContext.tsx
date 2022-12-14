@@ -2,7 +2,12 @@ import React, { createContext, PropsWithChildren, useEffect, useState} from 'rea
 import { ethers } from 'ethers';
 import { contractAbi, contractAddress } from '../utils/constants'; 
 
-export const TransactionContext = createContext<null>(null);
+
+type Props = PropsWithChildren<{}>;
+type ContextProps = {};
+
+
+export const TransactionContext = createContext<null | ContextProps>(null);
 
 const { ethereum } = window;
 
@@ -13,9 +18,9 @@ const getEthereumContract = () => {
 	console.log({provider, signer, transactionContract});
 }
 
-export const TransactionProvider = ({ children }: PropsWithChildren) => {
+export const TransactionProvider = ({ children }: Props) => {
 	return (
-		<TransactionContext.Provider value={null}>
+		<TransactionContext.Provider value={{}}>
 			{children}
 		</TransactionContext.Provider>
 	)
