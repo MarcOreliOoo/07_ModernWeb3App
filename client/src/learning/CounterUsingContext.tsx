@@ -7,6 +7,7 @@ type Props = PropsWithChildren<{
 	titleTag?: keyof JSX.IntrinsicElements | ComponentType<PropsWithChildren>
 }>
 
+//WELCOME
 export const CounterUsingContext = forwardRef<HTMLButtonElement, Props>(({start = 0, children, title = 'Compteur', titleTag: Title = 'h1'}, ref) => {
 	
 	const {n,incr} = useCounter();

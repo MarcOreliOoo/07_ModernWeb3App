@@ -1,7 +1,9 @@
+import React, {useContext} from 'react';
 import { ChangeEvent, FunctionComponent } from "react";
 import { AiFillPlayCircle } from 'react-icons/ai';
 import { SiEthereum } from 'react-icons/si';
 import { BsInfoCircle } from 'react-icons/bs';
+import { TransactionContext } from "../context/TransactionContextProvider";
 import { Loader } from './';
 
 const commonStyles = 'min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white';
@@ -26,10 +28,8 @@ const Input:FunctionComponent<InputProps> = ({ placeholder, name, type, value, o
 );
 
 let Welcome:FunctionComponent = () => {
-	const connectWallet = () => {
-
-	};
-
+	const { connectWallet }  = useContext(TransactionContext);
+	
 	const handleSubmit = () => {
 
 	};
