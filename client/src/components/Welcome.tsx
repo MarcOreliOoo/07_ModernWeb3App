@@ -28,7 +28,7 @@ const Input:FunctionComponent<InputProps> = ({ placeholder, name, type, value, o
 );
 
 let Welcome:FunctionComponent = () => {
-	const { connectWallet }  = useContext(TransactionContext);
+	const { connectWallet, currentAccount }  = useContext(TransactionContext);
 	
 	const handleSubmit = () => {
 
@@ -50,11 +50,12 @@ let Welcome:FunctionComponent = () => {
 					</p>
 
 					{/** Connect button */}
-					<button type="button" onClick={connectWallet} className="flex flex-row justify-center items-center my-5 bg-[#2952e3] rounded-full p-3 cursor-pointer hover:bg-[#2546bd]">
+					{!currentAccount && (<button type="button" onClick={connectWallet} className="flex flex-row justify-center items-center my-5 bg-[#2952e3] rounded-full p-3 cursor-pointer hover:bg-[#2546bd]">
 						<p className="text-white text-base font-semibold">
 							Connect Wallet
 						</p>
 					</button>
+					)}
 
 					{/** Keywords space */}
 					<div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">

@@ -1,9 +1,18 @@
-import React, { createContext, PropsWithChildren, useEffect, useState} from 'react';
+import React, { createContext, PropsWithChildren, useEffect, useState, ChangeEvent} from 'react';
 import { ethers } from 'ethers';
 import { contractAbi, contractAddress } from '../utils/constants'; 
 
 type ContextProps = {
-	connectWallet : () => Promise<void>
+	connectWallet : () => Promise<void>,
+	currentAccount: string,
+	formData: { addressTo: string; amount: string; keyword: string; message: string; },
+	Dispatch<React.SetStateAction<{
+		addressTo: string;
+		amount: string;
+		keyword: string;
+		message: string;
+	}>>,
+	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof FormData) => void
 };
 export const TransactionContext = createContext({} as ContextProps);
 
@@ -19,12 +28,28 @@ const getEthereumContract = () => {
 type TransactionContextProviderProps = PropsWithChildren<{}>;
 export const TransactionContextProvider = ({ children }: TransactionContextProviderProps) => {
 	const [currentAccount, setCurrentAccount] = useState("");
+	const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message : ''});
+	
+	const handleChange = (e:ChangeEvent<HTMLInputElement>, name: keyof FormData) => {
+		setFormData((prevState) => ({...prevState, [name]: e.currentTarget.value}))
+	};
 
 	const checkIfWalletIsConnected = async () => {
-		if(!ethereum) return alert("Please install Metamask");
-		const accounts = await ethereum.request?.({method:'eth_accounts'});
-
-		console.log(accounts);
+		try {
+			if(!ethereum) return alert("Please install Metamask");
+			const accounts = await ethereum.request?.({method:'eth_accounts'});
+			if(accounts.length){
+				setCurrentAccount(accounts[0]);
+				
+				//getAllTransactions();
+			} else {
+				console.log("No accounts found");
+			}
+		} catch (error) {
+			console.log(error);
+			throw new Error("No ethereum object");
+		}
+		
 	};
 
 	const connectWallet = async () => {
@@ -38,12 +63,23 @@ export const TransactionContextProvider = ({ children }: TransactionContextProvi
 		}
 	};
 
+
+	const  sendTransaction = async () => {
+		try {
+			if(!ethereum) return alert("Please install Metamask");
+			// get the data from the form
+
+		} catch (error) {
+			console.log(error);
+			throw new Error("No ethereum object");		}
+	};
+
 	useEffect(() => {
 		checkIfWalletIsConnected();
 	},[]);
 
 	return (
-		<TransactionContext.Provider value={{ connectWallet }}>
+		<TransactionContext.Provider value={{ connectWallet, currentAccount, formData, setFormData, handleChange }}>
 			{children}
 		</TransactionContext.Provider>
 	)
