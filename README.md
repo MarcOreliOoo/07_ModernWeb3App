@@ -1,6 +1,8 @@
-# ModernWeb3App
+# ModernWeb3App [WIP]
 
-The goal of the project is to create a dapp interacting with blockchain using : typescript, react, solidity and tailwindcss.
+> The goal of the project is to create a dapp interacting with blockchain using : typescript, react, solidity and tailwindcss.
+> The main focus here is the front part using TS, using context provider, and nice design with Tailwindcss.
+> The blockchain part is bad. For better practice: follow other repository like Commown Shared Wallet (advanced) or DéveloppeurEthereum from Alyra training
 
 ## Installation
 * folder client
