@@ -5,18 +5,19 @@ import { SiEthereum } from 'react-icons/si';
 import { BsInfoCircle } from 'react-icons/bs';
 import { TransactionContext } from "../context/TransactionContextProvider";
 import { Loader } from './';
+import { MyFormData } from '../types/types';
 
 const commonStyles = 'min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white';
 
 type InputProps = {
-	placeholder: string,
-	name: string,
-	type: string,
-	value: number,
-	onChange: string
+	placeholder: string;
+	name: keyof MyFormData;
+	type: string;
+	value: number|string;
+	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof MyFormData) =>  void;
 };
 
-const Input:FunctionComponent<InputProps> = ({ placeholder, name, type, value, onChange }) => (
+const Input:FunctionComponent<InputProps> = ({ placeholder, name, type, value, handleChange }) => (
 	<input 
 		placeholder={placeholder}
 		type={type}
@@ -25,13 +26,18 @@ const Input:FunctionComponent<InputProps> = ({ placeholder, name, type, value, o
 		onChange={(e) => handleChange(e,name)}
 		className="border-none my-2 w-full rounded-none p-2 outline-none bg-transparent text-white text-sm white-glassmorphism"
 	/>
+	//(e: ChangeEvent<HTMLInputElement>, name: keyof FormData) => void;
 );
 
 let Welcome:FunctionComponent = () => {
-	const { connectWallet, currentAccount }  = useContext(TransactionContext);
+	const { connectWallet, currentAccount, formData, setFormData, handleChange, sendTransaction }  = useContext(TransactionContext);
 	
 	const handleSubmit = () => {
-
+		const { addressTo, amount, keyword, message } = formData;
+		e.preventDefault();
+		if(!addressTo || !amount || !keyword || !message) return;
+		
+		sendTransaction();
 	};
 
 	return(
@@ -105,10 +111,10 @@ let Welcome:FunctionComponent = () => {
 
 					{/** Input */}
 					<div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-						<Input placeholder="Address To" name="addressTo" type="text" handleChange={() => {}} />
-						<Input placeholder="Amount (ETH)" name="amount" type="number" handleChange={() => {}} />
-						<Input placeholder="Keyword (Gif)" name="keywordName" type="text" handleChange={() => {}} />
-						<Input placeholder="Enter Message" name="message" type="text" handleChange={() => {}} />
+						<Input placeholder="Address To" name="addressTo" type="text" value="" handleChange={handleChange} />
+						<Input placeholder="Amount (ETH)" name="amount" type="number" value="" handleChange={handleChange} />
+						<Input placeholder="Keyword (Gif)" name="keyword" type="text" value="" handleChange={handleChange} />
+						<Input placeholder="Enter Message" name="message" type="text" value="" handleChange={handleChange} />
 
 						<div className="h-[1px] w-full bg-gray-400"/>
 						{false ? (

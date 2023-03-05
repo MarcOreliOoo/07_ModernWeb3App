@@ -1,6 +1,7 @@
 import React, { createContext, PropsWithChildren, useEffect, useState, ChangeEvent} from 'react';
 import { ethers } from 'ethers';
 import { contractAbi, contractAddress } from '../utils/constants'; 
+import { MyFormData } from '../types/types';
 
 
 const { ethereum } = window;
@@ -12,19 +13,13 @@ const getEthereumContract = () => {
 	console.log({provider, signer, transactionContract});
 }
 
-type FormData = {
-	addressTo: string;
-	amount: string;
-	keyword: string;
-	message: string;
-}
-
 type ContextProps = {
 	connectWallet : () => Promise<void>;
 	currentAccount: string;
-	formData: FormData;
-	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof FormData) => void
+	formData: MyFormData;
+	setFormData: React.Dispatch<React.SetStateAction<MyFormData>>;
+	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof MyFormData) => void;
+	sendTransaction: () => Promise<void>;
 };
 export const TransactionContext = createContext({} as ContextProps);
 
@@ -34,7 +29,7 @@ export const TransactionContextProvider = ({ children }: TransactionContextProvi
 	const [currentAccount, setCurrentAccount] = useState("");
 	const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message : ''});
 	
-	const handleChange = (e:ChangeEvent<HTMLInputElement>, name: keyof FormData) => {
+	const handleChange = (e:ChangeEvent<HTMLInputElement>, name: keyof MyFormData) => {
 		setFormData((prevState) => ({...prevState, [name]: e.currentTarget.value}))
 	};
 
@@ -83,7 +78,7 @@ export const TransactionContextProvider = ({ children }: TransactionContextProvi
 	},[]);
 
 	return (
-		<TransactionContext.Provider value={{ connectWallet, currentAccount, formData, setFormData, handleChange }}>
+		<TransactionContext.Provider value={{ connectWallet, currentAccount, formData, setFormData, handleChange, sendTransaction }}>
 			{children}
 		</TransactionContext.Provider>
 	)
