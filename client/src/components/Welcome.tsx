@@ -13,32 +13,32 @@ type InputProps = {
 	placeholder: string;
 	name: keyof MyFormData;
 	type: string;
-	value: number|string;
-	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof MyFormData) =>  void;
+	value?: number|string;
+	xChange: (e: ChangeEvent<HTMLInputElement>, name: keyof MyFormData) =>  void;
 };
 
-const Input:FunctionComponent<InputProps> = ({ placeholder, name, type, value, handleChange }) => (
+const Input:FunctionComponent<InputProps> = ({ placeholder, name, type, value, xChange }) => (
 	<input 
 		placeholder={placeholder}
 		type={type}
 		step="0.0001"
 		value={value}
-		onChange={(e) => handleChange(e,name)}
+		onChange={(e) => xChange(e,name)}
 		className="border-none my-2 w-full rounded-none p-2 outline-none bg-transparent text-white text-sm white-glassmorphism"
 	/>
-	//(e: ChangeEvent<HTMLInputElement>, name: keyof FormData) => void;
 );
 
 let Welcome:FunctionComponent = () => {
-	const { connectWallet, currentAccount, formData, setFormData, handleChange, sendTransaction }  = useContext(TransactionContext);
+	const { connectWallet, currentAccount, formData, handleChange, sendTransaction }  = useContext(TransactionContext);
 	
-	const handleSubmit = () => {
+	const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
 		const { addressTo, amount, keyword, message } = formData;
-		e.preventDefault();
+		event.preventDefault(); //We don't want the page to reload
 		if(!addressTo || !amount || !keyword || !message) return;
-		
 		sendTransaction();
 	};
+
+	console.log("Welcome_ " + JSON.stringify(formData));
 
 	return(
 		<div className="flex w-full justify-center items-center">
@@ -111,10 +111,11 @@ let Welcome:FunctionComponent = () => {
 
 					{/** Input */}
 					<div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-						<Input placeholder="Address To" name="addressTo" type="text" value="" handleChange={handleChange} />
-						<Input placeholder="Amount (ETH)" name="amount" type="number" value="" handleChange={handleChange} />
-						<Input placeholder="Keyword (Gif)" name="keyword" type="text" value="" handleChange={handleChange} />
-						<Input placeholder="Enter Message" name="message" type="text" value="" handleChange={handleChange} />
+						<form>
+						<Input placeholder="Address To" name="addressTo" type="text" xChange={handleChange} />
+						<Input placeholder="Amount (ETH)" name="amount" type="number" xChange={handleChange} />
+						<Input placeholder="Keyword (Gif)" name="keyword" type="text" xChange={handleChange} />
+						<Input placeholder="Enter Message" name="message" type="text" xChange={handleChange} />
 
 						<div className="h-[1px] w-full bg-gray-400"/>
 						{false ? (
@@ -124,6 +125,7 @@ let Welcome:FunctionComponent = () => {
 								Send Now
 							</button>
 						)}
+						</form>
 					</div>
 				</div>
 			</div>
@@ -132,7 +134,3 @@ let Welcome:FunctionComponent = () => {
 };
 
 export default Welcome;
-
-function handleChange(e: ChangeEvent<HTMLInputElement>, name: string): void {
-	throw new Error("Function not implemented.");
-}

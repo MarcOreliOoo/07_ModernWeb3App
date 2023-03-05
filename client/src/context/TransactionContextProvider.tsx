@@ -5,6 +5,7 @@ import { MyFormData } from '../types/types';
 
 
 const { ethereum } = window;
+
 const getEthereumContract = () => {
 	const provider = new ethers.providers.Web3Provider(ethereum!);
 	const signer = provider.getSigner();
@@ -17,7 +18,7 @@ type ContextProps = {
 	connectWallet : () => Promise<void>;
 	currentAccount: string;
 	formData: MyFormData;
-	setFormData: React.Dispatch<React.SetStateAction<MyFormData>>;
+	//setFormData: React.Dispatch<React.SetStateAction<MyFormData>>;
 	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof MyFormData) => void;
 	sendTransaction: () => Promise<void>;
 };
@@ -27,10 +28,22 @@ export const TransactionContext = createContext({} as ContextProps);
 type TransactionContextProviderProps = PropsWithChildren<{}>;
 export const TransactionContextProvider = ({ children }: TransactionContextProviderProps) => {
 	const [currentAccount, setCurrentAccount] = useState("");
-	const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message : ''});
+	const [formData, setFormData] = useState<MyFormData>({ addressTo: '', amount: '', keyword: '', message : ''});
 	
+	/*const handleChange = (e:ChangeEvent<HTMLInputElement>, name: keyof MyFormData) => {
+		if(e?.currentTarget?.value){
+			console.log("TransactionContextProvider.handleChange : "+e?.currentTarget?.value);
+			setFormData((prevState) => ({...prevState, [name]: e.currentTarget.value}))
+		} else {
+			console.log("prout");
+		}
+	};*/
+
 	const handleChange = (e:ChangeEvent<HTMLInputElement>, name: keyof MyFormData) => {
-		setFormData((prevState) => ({...prevState, [name]: e.currentTarget.value}))
+		if(e.currentTarget.value != null && name != null) {
+			let updatedValue = {[name]: e.currentTarget.value};
+			setFormData((prevState) => ({...prevState, ...updatedValue}));
+		}
 	};
 
 	const checkIfWalletIsConnected = async () => {
@@ -63,10 +76,13 @@ export const TransactionContextProvider = ({ children }: TransactionContextProvi
 	};
 
 
-	const  sendTransaction = async () => {
+	const sendTransaction = async () => {
 		try {
 			if(!ethereum) return alert("Please install Metamask");
-			// get the data from the form
+			
+			const { addressTo, amount, keyword, message } = formData;
+			getEthereumContract();
+
 
 		} catch (error) {
 			console.log(error);
@@ -78,7 +94,7 @@ export const TransactionContextProvider = ({ children }: TransactionContextProvi
 	},[]);
 
 	return (
-		<TransactionContext.Provider value={{ connectWallet, currentAccount, formData, setFormData, handleChange, sendTransaction }}>
+		<TransactionContext.Provider value={{ connectWallet, currentAccount, formData, handleChange, sendTransaction }}>
 			{children}
 		</TransactionContext.Provider>
 	)
