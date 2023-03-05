@@ -2,19 +2,6 @@ import React, { createContext, PropsWithChildren, useEffect, useState, ChangeEve
 import { ethers } from 'ethers';
 import { contractAbi, contractAddress } from '../utils/constants'; 
 
-type ContextProps = {
-	connectWallet : () => Promise<void>,
-	currentAccount: string,
-	formData: { addressTo: string; amount: string; keyword: string; message: string; },
-	Dispatch<React.SetStateAction<{
-		addressTo: string;
-		amount: string;
-		keyword: string;
-		message: string;
-	}>>,
-	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof FormData) => void
-};
-export const TransactionContext = createContext({} as ContextProps);
 
 const { ethereum } = window;
 const getEthereumContract = () => {
@@ -24,6 +11,23 @@ const getEthereumContract = () => {
 	
 	console.log({provider, signer, transactionContract});
 }
+
+type FormData = {
+	addressTo: string;
+	amount: string;
+	keyword: string;
+	message: string;
+}
+
+type ContextProps = {
+	connectWallet : () => Promise<void>;
+	currentAccount: string;
+	formData: FormData;
+	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+	handleChange: (e: ChangeEvent<HTMLInputElement>, name: keyof FormData) => void
+};
+export const TransactionContext = createContext({} as ContextProps);
+
 
 type TransactionContextProviderProps = PropsWithChildren<{}>;
 export const TransactionContextProvider = ({ children }: TransactionContextProviderProps) => {
